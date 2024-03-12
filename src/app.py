@@ -1,10 +1,13 @@
 """A simple example to demonstrate the usage of `WebRAGPipeline`."""
+import json
 import logging
-from typing import Optional
+from typing import Generator, Optional
 
 from r2r.core import (
+    GenerationConfig,
     LLMProvider,
     LoggingDatabaseConnection,
+    RAGPipeline,
     VectorDBProvider,
     log_execution_to_db,
 )
@@ -57,6 +60,25 @@ class WebRAGPipeline(BasicRAGPipeline):
     def construct_context(self, results: list) -> str:
         return self.serper_client.construct_context(results)
 
+
+    def _stream_run(
+        self,
+        search_results: list,
+        context: str,
+        prompt: str,
+        generation_config: GenerationConfig,
+    ) -> Generator[str, None, None]:
+        yield f"<{RAGPipeline.SEARCH_STREAM_MARKER}>"
+        yield json.dumps(search_results)
+        yield f"</{RAGPipeline.SEARCH_STREAM_MARKER}>"
+
+        yield f"<{RAGPipeline.CONTEXT_STREAM_MARKER}>"
+        yield context
+        yield f"</{RAGPipeline.CONTEXT_STREAM_MARKER}>"
+        yield f"<{RAGPipeline.COMPLETION_STREAM_MARKER}>"
+        for chunk in self.generate_completion(prompt, generation_config):
+            yield chunk
+        yield f"</{RAGPipeline.COMPLETION_STREAM_MARKER}>"
 
 # Creates a pipeline using the `WebRAGPipeline` implementation
 app = E2EPipelineFactory.create_pipeline(

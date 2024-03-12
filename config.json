@@ -9,6 +9,14 @@
     "provider": "deepeval",
     "frequency": 1.0
   },
+  "language_model": {
+    "provider": "litellm"
+  },
+  "logging_database": {
+    "provider": "local",
+    "collection_name": "demo_logs",
+    "level": "INFO"
+  },
   "ingestion":{
     "provider": "local",
     "text_splitter": {
@@ -17,13 +25,8 @@
       "chunk_overlap": 20
     }
   },
-  "language_model": {
-    "provider": "litellm"
-  },
-  "logging_database": {
-    "provider": "sciphi"
-  },
   "vector_database": {
-    "provider": "sciphi"
+    "provider": "local",
+    "collection_name": "demo_vecs"
   }
 }
