@@ -83,5 +83,5 @@ class WebRAGPipeline(BasicRAGPipeline):
 # Creates a pipeline using the `WebRAGPipeline` implementation
 app = E2EPipelineFactory.create_pipeline(
     rag_pipeline_impl=WebRAGPipeline,
-    config_path='config.json'
+    config=R2RConfig.load_config("config.json")
 )
