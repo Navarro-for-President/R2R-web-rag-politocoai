@@ -15,7 +15,27 @@ from r2r.core import (
 from r2r.embeddings import OpenAIEmbeddingProvider
 from r2r.integrations import SerperClient
 from r2r.main import E2EPipelineFactory, R2RConfig
-from r2r.pipelines import BasicRAGPipeline
+from r2r.pipelines import BasicRAGPipeline, BasicPromptProvider
+from .prompt_provider import BasicPromptProvider
+
+WEB_RAG_SYSTEM_PROMPT = "You are a helpful assistant."
+WEB_RAG_TASK_PROMPT = """
+## Task:
+Answer the query given immediately below given the context which follows later. Use line item references to like [1], [2], ... refer to specifically numbered items in the provided context. Pay close attention to the title of each given source to ensure it is consistent with the query.
+
+### Query:
+{query}
+
+### Context:
+{context}
+
+### Query:
+{query}
+
+REMINDER - Use line item references to like [1], [2], ... refer to specifically numbered items in the provided context.
+## Response:
+"""
+
 
 logger = logging.getLogger(__name__)
 
@@ -27,8 +47,7 @@ class WebRAGPipeline(BasicRAGPipeline):
         embedding_model: str,
         embeddings_provider: OpenAIEmbeddingProvider,
         logging_connection: Optional[LoggingDatabaseConnection] = None,
-        system_prompt: Optional[str] = None,
-        task_prompt: Optional[str] = None,
+        prompt_provider: Optional[PromptProvider] = BasicPromptProvider(WEB_RAG_SYSTEM_PROMPT, WEB_RAG_TASK_PROMPT),
     ) -> None:
         logger.debug(f"Initalizing `WebRAGPipeline`.")
         super().__init__(
@@ -37,8 +56,7 @@ class WebRAGPipeline(BasicRAGPipeline):
             db=db,
             embedding_model=embedding_model,
             embeddings_provider=embeddings_provider,
-            system_prompt=system_prompt,
-            task_prompt=task_prompt,
+            prompt_provider=prompt_provider,
         )
         self.serper_client = SerperClient()
 
