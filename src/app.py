@@ -16,7 +16,6 @@ from r2r.embeddings import OpenAIEmbeddingProvider
 from r2r.integrations import SerperClient
 from r2r.main import E2EPipelineFactory, R2RConfig
 from r2r.pipelines import BasicRAGPipeline, BasicPromptProvider
-from .prompt_provider import BasicPromptProvider
 
 WEB_RAG_SYSTEM_PROMPT = "You are a helpful assistant."
 WEB_RAG_TASK_PROMPT = """
