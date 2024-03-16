@@ -46,7 +46,7 @@ class WebRAGPipeline(BasicRAGPipeline):
         embedding_model: str,
         embeddings_provider: OpenAIEmbeddingProvider,
         logging_connection: Optional[LoggingDatabaseConnection] = None,
-        prompt_provider: Optional[PromptProvider] = BasicPromptProvider(WEB_RAG_SYSTEM_PROMPT, WEB_RAG_TASK_PROMPT),
+        prompt_provider: Optional[BasicPromptProvider] = BasicPromptProvider(WEB_RAG_SYSTEM_PROMPT, WEB_RAG_TASK_PROMPT),
     ) -> None:
         logger.debug(f"Initalizing `WebRAGPipeline`.")
         super().__init__(
