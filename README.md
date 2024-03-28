@@ -2,6 +2,17 @@
 
 This directory contains the necessary files to deploy an intermediate RAG (Retrieval-Augmented Generation) pipeline which extends the functionality of the basic RAG pipeline by incorporating web search capabilities through the integration of the SerperClient.
 
+To test this application locally, run the following
+```bash
+# Install
+pip install -r requirements.txt
+
+# Launch
+uvicorn src.app:app
+```
+[Visit here](https://r2r-docs.sciphi.ai/core-features/app) for more information on how to customize your application.
+
+
 ## File Structure
 
 The main files in this directory are:
